@@ -4,12 +4,13 @@ import sys
 import thread
 from sys import stdin
 
-address = ''
+SEND_ADDRESS = '239.255.255.250'
 SEND_PORT = 59810
 LISTEN_PORT = 59811
 
 # set up the write socket
 wsocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
+wsocket.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 32)
 
 def main():
     # start the listen thread
@@ -29,7 +30,7 @@ def main():
         elif (line.startswith('send')):
             sendAction(line.replace('send', '').strip())
         elif (line == 'query'):
-            wsocket.sendto('{"action": "query"}', ('255.255.255.255', SEND_PORT))
+            wsocket.sendto('{"action": "query"}', (SEND_ADDRESS, SEND_PORT))
 
 # listens for responses from other multicast clients on a separate thread
 def listen(threadName):
@@ -47,7 +48,7 @@ def sendAction(action):
 
     print("Sending action %s" % (action))
 
-    wsocket.sendto('{"action": "' + action + '"}', (address, SEND_PORT))
+    wsocket.sendto('{"action": "' + action + '"}', (SEND_ADDRESS, SEND_PORT))
 
 if __name__ == '__main__':
     main()

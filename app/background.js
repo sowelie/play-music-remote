@@ -11,7 +11,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
 remoteSockets = {};
 
 // set up the socket
-s = new RemoteSocket({ port: LISTEN_PORT });
+s = new MulticastSocket({ address: '239.255.255.250', port: LISTEN_PORT });
 s.onReceive = function(e) {
   console.log(e);
   // send the message to the extension
