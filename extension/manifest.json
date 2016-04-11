@@ -7,13 +7,19 @@
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8z/CvxDo1NAOCBPXS2g5CRqeiDRREGUV3EQRafwoPNbymcQ/euPSCIl/IzZgZP51fRIDuMLXvc3hDR/xlOnZyw/38WxZZqP+yk0uog6Ve5k1ezPsQ1ejjlsnFkABubL5zeoaQNrQK9mNkO48SmWlPmeXmB2oIILZA31TRGuxUDAI6tI8z9eZpiKV5p9H2alEdVYdCBy6Cspi8iPaLFLsbuOaiR6dm3XfMi6ZXuzrIju9GXyuLD+4qSLt1v12DAWoU1EHWur3muaRWlD5uIzYhX9J2LbphZ7N3NJWXp5uWUwBO0ti/VHjx8rtgDyvQg3lizc2yEPQvlR+Dlvfz4s1+QIDAQAB",
 
   "browser_action": {
-    "default_icon": "icon.png"
+    "default_icon": "icon.png",
+    "default_popup": "settings.html"
+  },
+
+  "options_ui": {
+    "page": "settings.html",
+    "chrome_style": true
   },
 
   "content_scripts": [
     {
       "matches": ["https://play.google.com/music/*"],
-      "js": ["remote.js"]
+      "js": ["jquery.js", "remote.js"]
     }
   ],
 
@@ -24,6 +30,7 @@
 
   "permissions": [
     "tabs",
+    "storage",
     "https://ajax.googleapis.com/",
     "https://play.google.com/music/*"
   ]

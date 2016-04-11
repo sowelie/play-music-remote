@@ -70,7 +70,11 @@ MulticastSocket.prototype.handleError = function (additionalMessage, alternative
 };
 
 MulticastSocket.prototype.onReceive = function (info) {
-  this.onDiagram(info.data, info.remoteAddress, info.remotePort);
+  try {
+    this.onDiagram(info.data, info.remoteAddress, info.remotePort);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 MulticastSocket.prototype.onReceiveError = function (socketId, resultCode) {
@@ -84,19 +88,18 @@ MulticastSocket.prototype.arrayBufferToString = function (arrayBuffer) {
 };
 
 MulticastSocket.prototype.stringToArrayBuffer = function (string) {
-  // UTF-16LE
-  var buf = new ArrayBuffer(string.length * 2);
-  var bufView = new Uint16Array(buf);
-  for (var i = 0, strLen = string.length; i < strLen; i++) {
-    bufView[i] = string.charCodeAt(i);
-  }
-  return buf;
+  var encoder = new TextEncoder('utf-8');
+
+  return encoder.encode(string).buffer;
 };
 
 MulticastSocket.prototype.sendDiagram = function (message, callback, errCallback) {
+  console.log("multicast send", message);
+
   if (typeof message === 'string') {
     message = this.stringToArrayBuffer(message);
   }
+
   if (!message || message.byteLength == 0 || !this.socketId) {
     if (callback) {
       callback.call(this);
@@ -106,6 +109,7 @@ MulticastSocket.prototype.sendDiagram = function (message, callback, errCallback
   var me = this;
   chrome.sockets.udp.send(me.socketId, message, me.config.address, me.config.port,
       function (sendInfo) {
+        console.log(sendInfo);
     if (sendInfo.resultCode >= 0 && sendInfo.bytesSent >= 0) {
       if (callback) {
         callback.call(me);
