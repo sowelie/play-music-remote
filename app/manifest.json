@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+
+  "name": "Play Remote",
+  "description": "Allows google play music to be controlled via a remote app for Android, iOS and Windows 10.",
+  "version": "1.0",
+
+  "app": {
+    "background": {
+      "scripts": ["multicast.js", "background.js"],
+      "persistent": true
+    }
+  },
+
+  "sockets": {
+    "udp": {
+      "bind": "*",
+      "send": "*",
+      "multicastMembership": ""
+    }
+  }
+}
