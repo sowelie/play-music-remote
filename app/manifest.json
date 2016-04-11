@@ -7,7 +7,7 @@
 
   "app": {
     "background": {
-      "scripts": ["multicast.js", "background.js"],
+      "scripts": ["socket.js", "background.js"],
       "persistent": true
     }
   },
